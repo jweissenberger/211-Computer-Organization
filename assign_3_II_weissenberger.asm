@@ -50,8 +50,14 @@ max_loop:
 	beq $t2, $t3, max_end # check for array end
 	
 	lw  $a0, ($t1) # put value of the array in 
-	add $t0, $t0, $a0 # add the current value to the sum
+	slt $s1, $a0, $t4 # compare current value and max
+	beq $s1, $zero, switch_max # if the new value is greater than the max, go there
 	
+	addi $t2, $t2, 1 # advance loop counter
+	addi $t1, $t1, 4 # advance array pointer
+	j max_loop
+switch_max:
+	lw $t4, ($t1) # make the max the currect value of the array
 	addi $t2, $t2, 1 # advance loop counter
 	addi $t1, $t1, 4 # advance array pointer
 	j max_loop
